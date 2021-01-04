@@ -33,7 +33,7 @@ include $(RT28xx_DIR)/os/linux/config.mk
 RTMP_SRC_DIR = $(RT28xx_DIR)/RT$(MODULE)
 
 #PLATFORM: Target platform
-PLATFORM = PC
+#PLATFORM = PC
 #PLATFORM = 5VT
 #PLATFORM = IKANOS_V160
 #PLATFORM = IKANOS_V180
@@ -69,6 +69,7 @@ PLATFORM = PC
 #PLATFORM = RALINK_3352
 #PLATFORM = UBICOM_IPX8
 #PLATFORM = INTELP6
+PLATFORM = ODROID
 
 #APSOC
 ifeq ($(MODULE),3050)
@@ -313,6 +314,14 @@ LINUX_SRC = /home2/charlestu/AP-VT3426/linux-2.6.18
 CROSS_COMPILE = /opt/montavista/pro/devkit/arm/v5t_le_mvl5/bin/arm_v5t_le-
 endif
 
+ifeq ($(PLATFORM),ODROID)
+EXTRA_CFLAGS += -I$(RT28xx_DIR)/include
+
+ARCH ?= arm64
+CROSS_COMPILE ?= aarch64-linux-gnu-
+LINUX_SRC = $(shell pwd)/../../../../common/
+endif
+
 export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
@@ -397,6 +406,8 @@ ifeq ($(PLATFORM),DM6446)
 else
 ifeq ($(PLATFORM),FREESCALE8377)
 	$(MAKE) ARCH=powerpc CROSS_COMPILE=$(CROSS_COMPILE) -C  $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
+else ifeq ($(PLATFORM),ODROID)
+	$(MAKE) -C $(RT28xx_DIR)/../../../../out/target/product/odroidn2/obj/KERNEL_OBJ SUBDIRS=$(RT28xx_DIR)/os/linux modules
 else
 	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
 endif

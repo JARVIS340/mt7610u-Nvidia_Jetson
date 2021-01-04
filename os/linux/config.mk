@@ -127,7 +127,7 @@ HAS_USB_FIRMWARE_MULTIBYTE_WRITE=n
 
 
 #Support ANDROID_SUPPORT
-HAS_ANDROID_SUPPORT=n
+HAS_ANDROID_SUPPORT=y
 
 #HAS_IFUP_IN_PROBE_SUPPORT
 HAS_IFUP_IN_PROBE_SUPPORT=n
@@ -1146,4 +1146,8 @@ endif
 ifeq ($(PLATFORM),RALINK_3352)
 CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include/asm-mips/mach-generic -I$(LINUX_SRC)/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe  -finline-limit=100000 -march=mips2 -mabi=32 -Wa,--trap -DLINUX -nostdinc -iwithprefix include $(WFLAGS)
 export CFLAGS
+endif
+
+ifeq ($(PLATFORM),ODROID)
+EXTRA_CFLAGS := $(WFLAGS) -I$(RT28xx_DIR)/include -Wno-unused-variable -Wno-format -Wno-declaration-after-statement -Wno-misleading-indentation -Wno-array-bounds -Wno-overflow -Wno-incompatible-pointer-types -Wno-unused-function -Wno-discarded-qualifiers -Wno-int-conversion -Wno-unused-result -Wno-parentheses -Wno-return-type -Wno-maybe-uninitialized
 endif
