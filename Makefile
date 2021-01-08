@@ -407,7 +407,7 @@ else
 ifeq ($(PLATFORM),FREESCALE8377)
 	$(MAKE) ARCH=powerpc CROSS_COMPILE=$(CROSS_COMPILE) -C  $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
 else ifeq ($(PLATFORM),ODROID)
-	$(MAKE) -C $(RT28xx_DIR)/../../../../out/target/product/odroidn2/obj/KERNEL_OBJ SUBDIRS=$(RT28xx_DIR)/os/linux modules
+	$(MAKE) -C $(RT28xx_DIR)/../../../../out/target/product/$(TARGET_PRODUCT)/obj/KERNEL_OBJ SUBDIRS=$(RT28xx_DIR)/os/linux modules
 else
 	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
 endif
