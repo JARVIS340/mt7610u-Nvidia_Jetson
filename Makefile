@@ -69,7 +69,8 @@ RTMP_SRC_DIR = $(RT28xx_DIR)/RT$(MODULE)
 #PLATFORM = RALINK_3352
 #PLATFORM = UBICOM_IPX8
 #PLATFORM = INTELP6
-PLATFORM = ODROID
+#PLATFORM = ODROID
+PLATFORM = JETSON
 
 #APSOC
 ifeq ($(MODULE),3050)
@@ -322,6 +323,15 @@ CROSS_COMPILE ?= aarch64-linux-gnu-
 LINUX_SRC = $(shell pwd)/../../../../common/
 endif
 
+ifeq ($(PLATFORM),JETSON)
+EXTRA_CFLAGS += -I$(RT28xx_DIR)/include
+
+ARCH = arm64
+CROSS_COMPILE = aarch64-linux-gnu-
+LINUX_SRC_MODULE = /lib/modules/$(shell uname -r)/kernel/drivers/net/wireless/mediatek/mt7610u
+LINUX_SRC = /usr/src/linux-headers-4.9.140-tegra-ubuntu18.04_aarch64/kernel-4.9
+endif
+
 export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
@@ -409,7 +419,7 @@ ifeq ($(PLATFORM),FREESCALE8377)
 else ifeq ($(PLATFORM),ODROID)
 	$(MAKE) -C $(RT28xx_DIR)/../../../../out/target/product/$(TARGET_PRODUCT)/obj/KERNEL_OBJ SUBDIRS=$(RT28xx_DIR)/os/linux modules
 else
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
+	$(MAKE) ARCH=arm64 -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
 endif
 endif
 
